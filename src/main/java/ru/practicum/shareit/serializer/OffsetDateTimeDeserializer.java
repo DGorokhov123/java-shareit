@@ -16,16 +16,21 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class OffsetDateTimeDeserializer extends StdDeserializer<OffsetDateTime> {
 
-    private final DateTimeFormatter formatter;
-    private final ZoneId zoneId;
+    private DateTimeFormatter formatter;
+    private ZoneId zoneId;
 
-    protected OffsetDateTimeDeserializer(
-            @Value("${shareit.api.datetime.format}") String dateTimeFormat,
-            @Value("${shareit.api.datetime.timezone}") String timezone
-    ) {
-        super(OffsetDateTime.class);
+    @Value("${shareit.api.datetime.format}")
+    public void setFormatter(String dateTimeFormat) {
         this.formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
+    }
+
+    @Value("${shareit.api.datetime.timezone}")
+    public void setZoneId(String timezone) {
         this.zoneId = ZoneId.of(timezone);
+    }
+
+    public OffsetDateTimeDeserializer() {
+        super(OffsetDateTime.class);
     }
 
     @Override

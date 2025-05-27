@@ -13,12 +13,14 @@ import java.time.format.DateTimeFormatter;
 @Component
 public class OffsetDateTimeSerializer extends StdSerializer<OffsetDateTime> {
 
-    private final DateTimeFormatter formatter;
+    private DateTimeFormatter formatter;
 
-    protected OffsetDateTimeSerializer(
-            @Value("${shareit.api.datetime.format}") String dateTimeFormat
-    ) {
+    protected OffsetDateTimeSerializer() {
         super(OffsetDateTime.class);
+    }
+
+    @Value("${shareit.api.datetime.format}")
+    public void setFormatter(String dateTimeFormat) {
         this.formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
     }
 
