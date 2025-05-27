@@ -1,6 +1,5 @@
 package ru.practicum.shareit.item.dal;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.ForbiddenException;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -13,8 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-@RequiredArgsConstructor
-public class MemoryItemRepository implements ItemRepository {
+public class InMemoryItemRepository implements ItemRepository {
 
     private final Map<Long, Item> items = new ConcurrentHashMap<>();
 

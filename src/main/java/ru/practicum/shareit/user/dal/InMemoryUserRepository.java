@@ -1,6 +1,5 @@
 package ru.practicum.shareit.user.dal;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ru.practicum.shareit.exception.ConflictException;
 import ru.practicum.shareit.exception.NotFoundException;
@@ -13,8 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
-@RequiredArgsConstructor
-public class MemoryUserRepository implements UserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     private final Map<Long, User> users = new ConcurrentHashMap<>();
 
