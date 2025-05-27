@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.booking.BookingService;
+import ru.practicum.shareit.validation.UserIdHeader;
 
 @RestController
 @RequestMapping("/bookings")
@@ -17,7 +18,7 @@ public class BookingController {
 
     @GetMapping("/{bookingId}")
     public BookingResponseDto getById(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId,
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @PathVariable @Positive(message = "Booking Id not valid") Long bookingId
     ) {
         return BookingResponseDto.from(bookingService.getById(userId, bookingId));
@@ -25,7 +26,7 @@ public class BookingController {
 
     @PostMapping
     public BookingResponseDto post(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId,
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @Valid @RequestBody BookingCreateDto bookingCreateDto
     ) {
         return BookingResponseDto.from(bookingService.create(userId, bookingCreateDto.toEntity()));

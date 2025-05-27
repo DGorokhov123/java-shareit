@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.practicum.shareit.item.ItemService;
+import ru.practicum.shareit.validation.UserIdHeader;
 
 import java.util.Collection;
 import java.util.List;
@@ -21,7 +22,7 @@ public class ItemController {
 
     @PostMapping
     public ItemResponseDto create(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId,
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @Valid @RequestBody ItemCreateDto itemCreateDto
     ) {
         return ItemResponseDto.from(itemService.create(userId, itemCreateDto.toEntity()));
@@ -29,7 +30,7 @@ public class ItemController {
 
     @PatchMapping("/{itemId}")
     public ItemResponseDto update(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId,
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @PathVariable @Positive(message = "Item Id not valid") Long itemId,
             @Valid @RequestBody ItemUpdateDto itemUpdateDto
     ) {
@@ -45,7 +46,7 @@ public class ItemController {
 
     @GetMapping
     public Collection<ItemResponseDto> findByUserId(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId
     ) {
         return itemService.findByUserId(userId).stream()
                 .filter(Objects::nonNull)
@@ -66,7 +67,7 @@ public class ItemController {
 
     @DeleteMapping("/{itemId}")
     public void delete(
-            @RequestHeader("X-Sharer-User-Id") @Positive(message = "User Id not valid") Long userId,
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @PathVariable @Positive(message = "Item Id not valid") Long itemId
     ) {
         itemService.deleteById(userId, itemId);
