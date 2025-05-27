@@ -1,9 +1,13 @@
 package ru.practicum.shareit.booking.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.serializer.OffsetDateTimeDeserializer;
+import ru.practicum.shareit.serializer.OffsetDateTimeSerializer;
 
 import java.time.OffsetDateTime;
 
@@ -11,13 +15,15 @@ import java.time.OffsetDateTime;
 public class BookingResponseDto {
 
     private Long id;
-    private Long bookerId;
-    private Long itemId;
+    private Long booker;
+    private Long item;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Moscow")
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime start;
 
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Moscow")
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime end;
 
     private BookingStatus status;
@@ -25,8 +31,8 @@ public class BookingResponseDto {
     public static BookingResponseDto from(Booking booking) {
         BookingResponseDto dto = new BookingResponseDto();
         dto.setId(booking.getId());
-        dto.setBookerId(booking.getBookerId());
-        dto.setItemId(booking.getItemId());
+        dto.setBooker(booking.getBookerId());
+        dto.setItem(booking.getItemId());
         dto.setStart(booking.getStart());
         dto.setEnd(booking.getEnd());
         dto.setStatus(booking.getStatus());

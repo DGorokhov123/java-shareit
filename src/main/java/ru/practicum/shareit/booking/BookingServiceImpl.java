@@ -19,7 +19,7 @@ public class BookingServiceImpl implements BookingService {
     private final ItemRepository itemRepository;
 
     @Override
-    public Booking getById(Long bookingId, Long userId) {
+    public Booking getById(Long userId, Long bookingId) {
         userRepository.checkExistenceById(userId);
 
         bookingRepository.checkExistenceById(bookingId);
@@ -31,6 +31,14 @@ public class BookingServiceImpl implements BookingService {
         if (Objects.equals(item.getOwnerId(), userId)) return booking;
 
         throw new ForbiddenException("User # " + userId + " has no rights to see booking # " + booking);
+    }
+
+    @Override
+    public Booking create(Long userId, Booking booking) {
+        userRepository.checkExistenceById(userId);
+        booking.setBookerId(userId);
+        booking.setStatus(BookingStatus.WAITING);
+        return bookingRepository.create(booking);
     }
 
 }

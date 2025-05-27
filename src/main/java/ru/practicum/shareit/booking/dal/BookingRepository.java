@@ -8,4 +8,6 @@ public interface BookingRepository {
 
     public void checkExistenceById(Long bookingId);
 
+    Booking create(Booking booking);
+
 }

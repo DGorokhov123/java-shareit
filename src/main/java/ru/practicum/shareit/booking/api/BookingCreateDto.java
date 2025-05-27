@@ -1,12 +1,16 @@
 package ru.practicum.shareit.booking.api;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import ru.practicum.shareit.booking.Booking;
 import ru.practicum.shareit.booking.BookingStatus;
+import ru.practicum.shareit.serializer.OffsetDateTimeDeserializer;
+import ru.practicum.shareit.serializer.OffsetDateTimeSerializer;
 
 import java.time.OffsetDateTime;
 
@@ -19,12 +23,14 @@ public class BookingCreateDto {
 
     @NotNull(message = "Field 'start' shouldn't be null")
     @FutureOrPresent(message = "Field 'start' shouldn't be in past")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Moscow")
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime start;
 
     @NotNull(message = "Field 'end' shouldn't be null")
     @FutureOrPresent(message = "Field 'end' shouldn't be in past")
-    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Europe/Moscow")
+    @JsonSerialize(using = OffsetDateTimeSerializer.class)
+    @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime end;
 
     private BookingStatus status;
