@@ -34,7 +34,7 @@ public class OffsetDateTimeDeserializer extends StdDeserializer<OffsetDateTime> 
     }
 
     @Override
-    public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException, JacksonException {
+    public OffsetDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
         String date = jsonParser.getText();
         return LocalDateTime.parse(date, formatter).atZone(zoneId).toOffsetDateTime();
     }

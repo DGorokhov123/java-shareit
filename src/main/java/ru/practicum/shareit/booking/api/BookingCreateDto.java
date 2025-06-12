@@ -2,12 +2,12 @@ package ru.practicum.shareit.booking.api;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 import ru.practicum.shareit.serializer.OffsetDateTimeDeserializer;
 import ru.practicum.shareit.serializer.OffsetDateTimeSerializer;
+import ru.practicum.shareit.validation.FutureOrPresentWithTolerance;
 
 import java.time.OffsetDateTime;
 
@@ -19,13 +19,13 @@ public class BookingCreateDto {
     private Long itemId;
 
     @NotNull(message = "Field 'start' shouldn't be null")
-    @FutureOrPresent(message = "Field 'start' shouldn't be in past")
+    @FutureOrPresentWithTolerance(message = "Field 'start' shouldn't be in past")
     @JsonSerialize(using = OffsetDateTimeSerializer.class)
     @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime start;
 
     @NotNull(message = "Field 'end' shouldn't be null")
-    @FutureOrPresent(message = "Field 'end' shouldn't be in past")
+    @FutureOrPresentWithTolerance(message = "Field 'end' shouldn't be in past")
     @JsonSerialize(using = OffsetDateTimeSerializer.class)
     @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
     private OffsetDateTime end;
