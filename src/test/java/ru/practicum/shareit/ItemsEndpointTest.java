@@ -218,7 +218,7 @@ public class ItemsEndpointTest extends HttpAbstractTest {
 
         // SEARCH BY TEXT
         String[] searches5 = {"good.crud.tool.1", "good.crud.tool.2", "good.crud.tool.4"};
-        assertTrue(checkGetAll("/items/search?text=crud", 200, searches5));
+        assertTrue(checkGetAll("/items/search?text=cRuD", 200, searches5));
 
         String[] searches6 = {"[]"};
         assertTrue(checkGetAll("/items/search?text=dabudidabuda", 200, searches6));
