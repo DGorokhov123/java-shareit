@@ -68,11 +68,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemResponseExtendedViewDto getById(Long itemId) {
+    public ItemResponseExtendedViewDto getById(Long userId, Long itemId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new NotFoundException("User " + userId + " not found")
+        );
         Item foundItem = itemRepository.findById(itemId).orElseThrow(
                 () -> new NotFoundException("Item " + itemId + " not found")
         );
-        return ItemResponseExtendedViewDto.from(foundItem);
+
+        ItemResponseExtendedViewDto dto = ItemResponseExtendedViewDto.from(foundItem);
+
+        if (Objects.equals(user, foundItem.getOwner())) {
+            OffsetDateTime nowTime = OffsetDateTime.now();
+            OffsetDateTime lastBooking = bookingRepository.getLastBookingDate(itemId, nowTime);
+            OffsetDateTime nextBooking = bookingRepository.getNextBookingDate(itemId, nowTime);
+            dto.setLastBooking(lastBooking);
+            dto.setNextBooking(nextBooking);
+        }
+
+        return dto;
     }
 
     @Override

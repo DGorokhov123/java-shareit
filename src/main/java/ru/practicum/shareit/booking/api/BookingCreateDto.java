@@ -14,8 +14,8 @@ import java.time.OffsetDateTime;
 @Data
 public class BookingCreateDto {
 
-    @NotNull(message = "Field 'start' shouldn't be null")
-    @Positive(message = "Field 'start' should be positive")
+    @NotNull(message = "Field 'itemId' shouldn't be null")
+    @Positive(message = "Field 'itemId' should be positive")
     private Long itemId;
 
     @NotNull(message = "Field 'start' shouldn't be null")

@@ -50,9 +50,10 @@ public class ItemController {
 
     @GetMapping("/{itemId}")
     public ItemResponseExtendedViewDto getById(
+            @UserIdHeader @Positive(message = "User Id not valid") Long userId,
             @PathVariable @Positive(message = "Item Id not valid") Long itemId
     ) {
-        return itemService.getById(itemId);
+        return itemService.getById(userId, itemId);
     }
 
     // GET COLLECTION OPS

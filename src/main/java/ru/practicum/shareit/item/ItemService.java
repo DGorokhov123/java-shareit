@@ -10,7 +10,7 @@ public interface ItemService {
 
     ItemResponseDto update(Long userId, Long itemId, ItemUpdateDto itemUpdateDto);
 
-    ItemResponseExtendedViewDto getById(Long itemId);
+    ItemResponseExtendedViewDto getById(Long userId, Long itemId);
 
     Collection<ItemResponseExtendedViewDto> findByOwnerId(Long userId);
 
