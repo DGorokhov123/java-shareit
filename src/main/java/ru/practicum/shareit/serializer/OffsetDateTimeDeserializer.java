@@ -19,6 +19,10 @@ public class OffsetDateTimeDeserializer extends StdDeserializer<OffsetDateTime> 
     private DateTimeFormatter formatter;
     private ZoneId zoneId;
 
+    public OffsetDateTimeDeserializer() {
+        super(OffsetDateTime.class);
+    }
+
     @Value("${shareit.api.datetime.format}")
     public void setFormatter(String dateTimeFormat) {
         this.formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
@@ -27,10 +31,6 @@ public class OffsetDateTimeDeserializer extends StdDeserializer<OffsetDateTime> 
     @Value("${shareit.api.datetime.timezone}")
     public void setZoneId(String timezone) {
         this.zoneId = ZoneId.of(timezone);
-    }
-
-    public OffsetDateTimeDeserializer() {
-        super(OffsetDateTime.class);
     }
 
     @Override

@@ -18,7 +18,7 @@ import java.time.Instant;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // VALIDATION ERRORS
+    // BAD_REQUEST ERRORS
 
     @ExceptionHandler(
             MethodArgumentNotValidException.class                 // @Valid annotation exceptions
@@ -50,6 +50,21 @@ public class GlobalExceptionHandler {
                 .timestamp(Instant.now())
                 .status(HttpStatus.BAD_REQUEST)
                 .error("Illegal Argument")
+                .message(e.getMessage())
+                .path(request.getRequestURI())
+                .build();
+    }
+
+    @ExceptionHandler({
+            BadRequestException.class                             // custom bad request
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleBadRequest(RuntimeException e, HttpServletRequest request) {
+        log.debug("BAD REQUEST: {}", e.getMessage());
+        return ErrorResponse.builder()
+                .timestamp(Instant.now())
+                .status(HttpStatus.BAD_REQUEST)
+                .error("Bad Request")
                 .message(e.getMessage())
                 .path(request.getRequestURI())
                 .build();
