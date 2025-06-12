@@ -22,9 +22,9 @@ public class ItemsEndpointTest extends HttpAbstractTest {
         assertTrue(checkPatchWithHeader("/items/" + itemId, "{}", 400, "Validation", userId));           // empty json
         assertTrue(checkPatchWithHeader("/items/" + itemId, "{\"king\":\"sauron\"}", 400, "Validation", userId));    // other object
 
-        assertTrue(checkGet("/items/f", 400, "Illegal Argument"));
-        assertTrue(checkGet("/items/-1", 400, "Illegal Argument"));
-        assertTrue(checkGet("/items/0", 400, "Illegal Argument"));
+        assertTrue(checkGetWithHeader("/items/f", 400, "Illegal Argument", userId));
+        assertTrue(checkGetWithHeader("/items/-1", 400, "Illegal Argument", userId));
+        assertTrue(checkGetWithHeader("/items/0", 400, "Illegal Argument", userId));
 
         assertTrue(checkDeleteWithHeader("/items/f", 400, "Illegal Argument", userId));
         assertTrue(checkDeleteWithHeader("/items/-1", 400, "Illegal Argument", userId));
@@ -60,7 +60,7 @@ public class ItemsEndpointTest extends HttpAbstractTest {
         Long itemId = makeItemAndReturnId("{\"name\":\"not.found.tool\",\"description\":\"not found tool\",\"available\":true}", userId);
 
         // Item not found
-        assertTrue(checkGet("/items/" + (itemId + 1), 404, "not found"));
+        assertTrue(checkGetWithHeader("/items/" + (itemId + 1), 404, "not found", userId));
 
         assertTrue(checkDeleteWithHeader("/items/" + (itemId + 1), 404, "not found", userId));
 
@@ -205,7 +205,7 @@ public class ItemsEndpointTest extends HttpAbstractTest {
                 """, 200, "good.crud.tool.4", userId));
 
         // GET BY ID
-        assertTrue(checkGet("/items/" + itemId, 200, "good.crud.tool.4"));
+        assertTrue(checkGetWithHeader("/items/" + itemId, 200, "good.crud.tool.4", userId));
 
         // GET BY USER ID
         String[] searches1 = {"good.crud.tool.1", "good.crud.tool.2", "good.crud.tool.4"};

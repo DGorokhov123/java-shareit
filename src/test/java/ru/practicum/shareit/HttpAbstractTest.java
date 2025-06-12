@@ -133,6 +133,18 @@ public abstract class HttpAbstractTest {
         return response.getBody().contains(search);
     }
 
+    protected boolean checkGetWithHeader(String endPoint, int code, String search, Long userId) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        if (userId != null) headers.set(userIdHeader, String.valueOf(userId));
+        HttpEntity<String> request = new HttpEntity<>("", headers);
+        ResponseEntity<String> response = restTemplate.exchange(endPoint, HttpMethod.GET, request, String.class);
+        if (code != response.getStatusCode().value()) return false;
+        if (search == null) return true;
+        if (response.getBody() == null) return false;
+        return response.getBody().contains(search);
+    }
+
     protected boolean checkGetAll(String endPoint, int code, String[] search) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
