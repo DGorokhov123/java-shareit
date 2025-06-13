@@ -12,13 +12,13 @@ import java.time.OffsetDateTime;
 @Data
 public class CommentResponseDto {
 
-    Long id;
-    String text;
-    String authorName;
+    private Long id;
+    private String text;
+    private String authorName;
 
     @JsonSerialize(using = OffsetDateTimeSerializer.class)
     @JsonDeserialize(using = OffsetDateTimeDeserializer.class)
-    OffsetDateTime created;
+    private OffsetDateTime created;
 
     public static CommentResponseDto from(Comment comment) {
         if (comment == null) return null;

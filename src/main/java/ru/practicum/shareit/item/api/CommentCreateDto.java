@@ -9,6 +9,6 @@ public class CommentCreateDto {
 
     @NotBlank(message = "Field 'text' shouldn't be blank")
     @Size(min = 1, max = 512, message = "Field 'text' should be from 1 to 512 characters")
-    String text;
+    private String text;
 
 }
