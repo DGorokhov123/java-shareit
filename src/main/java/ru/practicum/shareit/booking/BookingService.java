@@ -1,5 +1,6 @@
 package ru.practicum.shareit.booking;
 
+import ru.practicum.shareit.booking.api.BookingApiState;
 import ru.practicum.shareit.booking.api.BookingCreateDto;
 import ru.practicum.shareit.booking.api.BookingResponseDto;
 
@@ -25,12 +26,12 @@ public interface BookingService {
 
     Collection<BookingResponseDto> getBookerBookings(
             Long userId,
-            String state
+            BookingApiState state
     );
 
     Collection<BookingResponseDto> getOwnerBookings(
             Long userId,
-            String state
+            BookingApiState state
     );
 
 }

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.practicum.shareit.booking.api.BookingApiState;
 import ru.practicum.shareit.booking.api.BookingCreateDto;
 import ru.practicum.shareit.booking.api.BookingResponseDto;
 import ru.practicum.shareit.exception.BadRequestException;
@@ -98,22 +99,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingResponseDto> getBookerBookings(Long userId, String state) {
+    public Collection<BookingResponseDto> getBookerBookings(Long userId, BookingApiState state) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User " + userId + " not found"));
 
         OffsetDateTime nowTime = OffsetDateTime.now();
         Sort sort = Sort.by("start").descending();
 
-        List<Booking> bookings = switch (state.toUpperCase()) {
-            case "CURRENT" ->
+        List<Booking> bookings = switch (state) {
+            case BookingApiState.CURRENT ->
                     bookingRepository.findByBookerIdAndStatusAndStartBeforeAndEndAfter(userId, BookingStatus.APPROVED, nowTime, nowTime, sort);
-            case "PAST" ->
+            case BookingApiState.PAST ->
                     bookingRepository.findByBookerIdAndStatusAndEndBefore(userId, BookingStatus.APPROVED, nowTime, sort);
-            case "FUTURE" ->
+            case BookingApiState.FUTURE ->
                     bookingRepository.findByBookerIdAndStatusAndStartAfter(userId, BookingStatus.APPROVED, nowTime, sort);
-            case "WAITING" -> bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.WAITING, sort);
-            case "REJECTED" -> bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.REJECTED, sort);
+            case BookingApiState.WAITING ->
+                    bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.WAITING, sort);
+            case BookingApiState.REJECTED ->
+                    bookingRepository.findByBookerIdAndStatus(userId, BookingStatus.REJECTED, sort);
             default -> bookingRepository.findByBookerId(userId, sort);
         };
 
@@ -121,22 +124,24 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public Collection<BookingResponseDto> getOwnerBookings(Long userId, String state) {
+    public Collection<BookingResponseDto> getOwnerBookings(Long userId, BookingApiState state) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundException("User " + userId + " not found"));
 
         OffsetDateTime nowTime = OffsetDateTime.now();
         Sort sort = Sort.by("start").descending();
 
-        List<Booking> bookings = switch (state.toUpperCase()) {
-            case "CURRENT" ->
+        List<Booking> bookings = switch (state) {
+            case BookingApiState.CURRENT ->
                     bookingRepository.findByItemOwnerIdAndStatusAndStartBeforeAndEndAfter(userId, BookingStatus.APPROVED, nowTime, nowTime, sort);
-            case "PAST" ->
+            case BookingApiState.PAST ->
                     bookingRepository.findByItemOwnerIdAndStatusAndEndBefore(userId, BookingStatus.APPROVED, nowTime, sort);
-            case "FUTURE" ->
+            case BookingApiState.FUTURE ->
                     bookingRepository.findByItemOwnerIdAndStatusAndStartAfter(userId, BookingStatus.APPROVED, nowTime, sort);
-            case "WAITING" -> bookingRepository.findByItemOwnerIdAndStatus(userId, BookingStatus.WAITING, sort);
-            case "REJECTED" -> bookingRepository.findByItemOwnerIdAndStatus(userId, BookingStatus.REJECTED, sort);
+            case BookingApiState.WAITING ->
+                    bookingRepository.findByItemOwnerIdAndStatus(userId, BookingStatus.WAITING, sort);
+            case BookingApiState.REJECTED ->
+                    bookingRepository.findByItemOwnerIdAndStatus(userId, BookingStatus.REJECTED, sort);
             default -> bookingRepository.findByItemOwnerId(userId, sort);
         };
 

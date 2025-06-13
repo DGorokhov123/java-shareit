@@ -48,8 +48,7 @@ public class BookingController {
     @GetMapping
     public Collection<BookingResponseDto> getBookerBookings(
             @UserIdHeader @Positive(message = "User Id not valid") Long userId,
-            @RequestParam(required = false, defaultValue = "ALL")
-            @Pattern(regexp = "(?i)ALL|CURRENT|PAST|FUTURE|WAITING|REJECTED") String state
+            @RequestParam(required = false, defaultValue = "ALL") BookingApiState state
     ) {
         return bookingService.getBookerBookings(userId, state);
     }
@@ -57,8 +56,7 @@ public class BookingController {
     @GetMapping("/owner")
     public Collection<BookingResponseDto> getOwnerBookings(
             @UserIdHeader @Positive(message = "User Id not valid") Long userId,
-            @RequestParam(required = false, defaultValue = "ALL")
-            @Pattern(regexp = "(?i)ALL|CURRENT|PAST|FUTURE|WAITING|REJECTED") String state
+            @RequestParam(required = false, defaultValue = "ALL") BookingApiState state
     ) {
         return bookingService.getOwnerBookings(userId, state);
     }
